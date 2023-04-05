@@ -1,7 +1,7 @@
 package antifraud.controller;
 
-import antifraud.dto.TransactionDto;
-import antifraud.model.Transaction;
+import antifraud.dto.TransactionRequest;
+import antifraud.dto.TransactionResponse;
 import antifraud.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<TransactionDto> sendAmount(@RequestBody Transaction transaction) {
-        return ResponseEntity.ok(transactionService.sendAmount(transaction));
+    public ResponseEntity<TransactionResponse> sendAmount(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(transactionService.sendAmount(transactionRequest));
     }
 }

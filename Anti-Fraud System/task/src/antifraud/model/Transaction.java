@@ -1,8 +1,14 @@
 package antifraud.model;
 
-public class Transaction {
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-    private int amount;
+@Entity
+public class Transaction {
+    @Id
+    private long id;
+
+    private long amount;
 
     public Transaction() {
     }
@@ -11,11 +17,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public int getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 }

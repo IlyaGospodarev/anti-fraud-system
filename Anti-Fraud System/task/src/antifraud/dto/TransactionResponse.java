@@ -1,12 +1,12 @@
 package antifraud.dto;
 
-public class TransactionDto {
+public class TransactionResponse {
     private String result;
 
-    public TransactionDto() {
+    public TransactionResponse() {
     }
 
-    public TransactionDto(String result) {
+    public TransactionResponse(String result) {
         this.result = result;
     }
 
