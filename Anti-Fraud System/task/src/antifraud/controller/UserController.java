@@ -1,8 +1,6 @@
 package antifraud.controller;
 
-import antifraud.dto.DeleteUser;
-import antifraud.dto.UserDto;
-import antifraud.model.User;
+import antifraud.dto.*;
 import antifraud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +17,28 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<UserDto> registerNewUser(@RequestBody @Valid User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
+    public ResponseEntity<UserResponse> registerNewUser(@RequestBody @Valid UserRequest userRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.saveUser(userRequest));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDto>> findAllUsers() {
+    public ResponseEntity<List<UserResponse>> findAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @DeleteMapping("/user/{username}")
-    public ResponseEntity<DeleteUser> deleteUserByUsername(@PathVariable String username) {
+    public ResponseEntity<DeleteUserResponse> deleteUserByUsername(@PathVariable String username) {
         return ResponseEntity.ok(userService.deleteUserByUsername(username));
+    }
+
+    @PutMapping("/role")
+    public ResponseEntity<UserResponse> changeUserRole(@RequestBody @Valid EditUserRoleRequest editUserRoleRequest) {
+        return ResponseEntity.ok(userService.changeUserRole(editUserRoleRequest));
+    }
+
+    @PutMapping("/access")
+    public ResponseEntity<StatusResponse> lockUnlockUser(@RequestBody @Valid UnlockUserRequest unlockUserRequest) {
+        return ResponseEntity.ok(userService.lockUnlockUser(unlockUserRequest));
     }
 }
