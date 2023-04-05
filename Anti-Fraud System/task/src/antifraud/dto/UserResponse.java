@@ -2,7 +2,7 @@ package antifraud.dto;
 
 import antifraud.model.User;
 
-public class UserDto {
+public class UserResponse {
 
     private long id;
 
@@ -10,19 +10,23 @@ public class UserDto {
 
     private String username;
 
-    public UserDto() {
+    private String role;
+
+    public UserResponse() {
     }
 
-    public UserDto(long id, String name, String username) {
+    public UserResponse(long id, String name, String username, String role) {
         this.id = id;
         this.name = name;
         this.username = username;
+        this.role = role;
     }
 
-    public UserDto(User user) {
+    public UserResponse(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.username = user.getUsername();
+        this.role = user.getRole();
     }
 
     public long getId() {
@@ -47,5 +51,13 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

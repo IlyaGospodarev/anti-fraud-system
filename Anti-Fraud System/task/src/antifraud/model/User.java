@@ -1,18 +1,13 @@
 package antifraud.model;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Collections;
 
 @Entity
-public class User implements UserDetails {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,13 +21,20 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
+    @NotBlank
+    private String role;
+
+    private boolean isEnabled;
+
     public User() {
     }
 
-    public User(String name, String username, String password) {
+    public User(String name, String username, String password, String role, boolean isEnabled) {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.role = role;
+        this.isEnabled = isEnabled;
     }
 
     public long getId() {
@@ -51,21 +53,6 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
     public String getUsername() {
         return username;
     }
@@ -74,23 +61,27 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public String getPassword() {
+        return password;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String getRole() {
+        return role;
     }
 
-    @Override
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }
