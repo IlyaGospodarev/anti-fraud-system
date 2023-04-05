@@ -1,13 +1,13 @@
 package antifraud.dto;
 
-public class DeleteUser {
+public class DeleteUserResponse {
     private String username;
     private String status = "Deleted successfully!";
 
-    public DeleteUser() {
+    public DeleteUserResponse() {
     }
 
-    public DeleteUser(String username) {
+    public DeleteUserResponse(String username) {
         this.username = username;
     }
 
