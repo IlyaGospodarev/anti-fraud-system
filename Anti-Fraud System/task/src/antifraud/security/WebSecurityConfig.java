@@ -4,6 +4,7 @@ import antifraud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static final String ADMINISTRATOR = "ADMINISTRATOR";
+    public static final String MERCHANT = "MERCHANT";
+    public static final String SUPPORT = "SUPPORT";
     @Autowired
     UserService userService;
 
@@ -34,6 +38,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/antifraud/transaction/**").hasRole(MERCHANT)
+                .antMatchers(HttpMethod.PUT, "/api/auth/access/**").hasRole(ADMINISTRATOR)
+                .antMatchers(HttpMethod.PUT, "/api/auth/role/**").hasRole(ADMINISTRATOR)
+                .antMatchers(HttpMethod.GET, "/api/auth/list/**").hasAnyRole(ADMINISTRATOR, SUPPORT)
+                .antMatchers(HttpMethod.DELETE, "/api/auth/user/**").hasRole(ADMINISTRATOR)
                 .antMatchers("/api/auth/user").permitAll()
                 .antMatchers("/actuator/shutdown").permitAll()
                 .and()
