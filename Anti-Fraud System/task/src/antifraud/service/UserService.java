@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
                 .isEmpty()
                 || userRequest.getPassword()
                 .isEmpty()) {
-            throw new InvalidInputUserParameters();
+            throw new BadRequestException("A request contains wrong input data");
         }
 
         User byUsername = userRepository.findByUsername(userRequest.getUsername());
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
             }
 
             userRepository.save(user);
-        } else throw new InvalidRegisterAnExistingUser();
+        } else throw new HttpConflictException("This user exists");
 
         return new UserResponse(user);
     }
@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new InvalidUser();
+            throw new NotFoundException("User is not found");
         }
 
         userRepository.delete(user);
@@ -93,19 +93,19 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(editUserRoleRequest.getUsername());
 
         if (user == null) {
-            throw new InvalidUser();
+            throw new NotFoundException("User is not found");
         }
 
         String role = editUserRoleRequest.getRole();
 
         if (!"SUPPORT".equalsIgnoreCase(role) &&
                 !"MERCHANT".equalsIgnoreCase(role)) {
-            throw new InvalidAllowedRoleException();
+            throw new BadRequestException("Unknown or not allowed role");
         }
 
         if (user.getRole()
                 .equals(role)) {
-            throw new AlreadyAssignedRoleException();
+            throw new HttpConflictException("This role is already assigned");
         }
 
         user.setRole(role);
@@ -119,11 +119,11 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(unlockUserRequest.getUsername());
 
         if (user == null) {
-            throw new InvalidUser();
+            throw new NotFoundException("User is not found");
         }
 
         if (user.getRole().equals("ADMINISTRATOR")) {
-            throw new InvalidTryToLockAdministrator();
+            throw new BadRequestException("Cannot lock Administrator");
         }
 
         boolean enabled = unlockUserRequest.getOperation().equals("UNLOCK");
@@ -133,5 +133,4 @@ public class UserService implements UserDetailsService {
                 .toLowerCase());
         return new StatusResponse(status);
     }
-
 }
